@@ -91,11 +91,9 @@
                 ]
             });
 
-            // $('#newModal').click(function () {
-            //     $('#taskModal').modal('show');
-            // });
+            
             $('#openTaskForm').click(function () {
-                $('#newModal').modal('show'); // Change "newModal" to match your modal's ID
+                $('#newModal').modal('show'); 
             });
             $("#save").submit(function(event) {
                 event.preventDefault();
@@ -108,18 +106,13 @@
                     success: function(res) {
                         console.log(res);
                         if (res == 1) {
-                            $('#newModal').hide();
-                            $('body').removeClass('modal-open');
-                            // $('.modal-backdrop').remove();
-                             $('#tasksTable').DataTable().ajax.reload();
-                            // // window.location.reload();
+                               $('#newModal').hide();
+                             window.location.reload();
                             alert("Task inserted Successfully");
 
 
                         } else {
-                            $('#newModal').hide();
-                            // // window.location.reload();
-                            $('#tasksTable').DataTable().ajax.reload();
+                            
                             alert("Task inserted Unsuccessful");
 
                         }

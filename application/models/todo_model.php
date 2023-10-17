@@ -10,8 +10,8 @@
             return $result;
         }
         public function addData($data){
-            $this->db->insert('todo',$data);
-            return $this->db->insert_id();
+           
+            return $this->db->insert('todo',$data);
 
         }
     }

@@ -23,16 +23,18 @@ class Todo_controller extends CI_Controller
     }
     public function addTask()
     {
-        $data = [
-            $title = $this->input->post('title'),
-            $description = $this->input->post('description'),
-            $status = $this->input->post('status')
-        ];
-        $inserted = $this->Todo_model->addData($data);
-        if ($inserted) {
-            echo json_encode(['success' => true, 'message' => 'Task added successfully']);
+        $data = array(
+            'title' => $this->input->post('task'),
+            'description' => $this->input->post('discription'),
+            'status' => $this->input->post('status')
+        );
+      $insert=$this->Todo_model->addData($data);
+        if ($insert) {
+           // echo json_encode(['success' => true, 'message' => 'Task added successfully']);
+        echo 1;       
         } else {
-            echo json_encode(['success' => false, 'message' => 'Failed to add task']);
+           // echo json_encode(['success' => false, 'message' => 'Failed to add task']);
+        echo 0;
         }
     }
 }
