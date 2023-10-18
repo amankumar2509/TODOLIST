@@ -14,5 +14,23 @@
             return $this->db->insert('todo',$data);
 
         }
+        public function deleteData($id){
+            $this->db->where('id',$id);
+            $this->db->delete('todo');
+            return $this->db->affected_rows()>0;
+        }
+
+        public function updateTask($id, $data) {
+            // Update the task with the provided data where the ID matches
+            $this->db->where('id', $id);
+            $this->db->update('tasks', $data);
+            
+            // Check if the update was successful
+            return $this->db->affected_rows() > 0;
+        }
+
+        public function statusInfo($taskId,$newStatus){
+          
+        }
     }
 ?>
