@@ -27,11 +27,11 @@ class Todo_controller extends CI_Controller
              base_url' => base_url('Todo_controller/ajax_getData/'),
             'total_rows' => $this->Todo_model->countAllData(),
             'per_page' => 10,
-            'uri_segment' => 2
+            'uri_segment' => 3
         ];
         $this->pagination->initialize($config);
 
-        $page = intval($this->uri->segment(2, 0));
+        $page = intval($this->uri->segment(3, 0));
         $offset = $page > 0 ? ($page - 1) * $config['per_page'] : 0;
         $data = $this->Todo_model->getPaginatedData($config['per_page'], $offset);
         $response = [
