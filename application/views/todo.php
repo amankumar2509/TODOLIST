@@ -84,38 +84,41 @@
         </div>
     </div>
     <!-- edit Modal -->
-
-
-    <!-- <div class="modal fade " id="editModal" role="dialog">
+    <div class="modal" id="editModal" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editexampleModalLabel">Edit Question</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <h3 class="modal-title" id="editModalLabel">Edit Question</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="save" action="" method="post">
-                        <div class="container">
-                            <label for="Task">Task: </label>
-                            <input type="text" id="edittask" name="edittask"></input>
+                    <!-- Add your form elements for editing here -->
+                    <form id="editForm" action="" method="post">
+                        <br>
+                        <div>
+                            <label for="editTask" style="font-weight: bold;">Edit the Task:</label>
+                            <input type="text" id="editTask" name="title" val="" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;" />
+                            <input type="text" id="taskid" name="id" val="" hidden />
+                            <span id="editTask-error" style="color:red"></span>
                         </div>
                         <br>
-                        <div class="container">
-                            <label for="discription">Discription: </label>
-                            <input type="text" id="editdis" name="editdis"></input>
+                        <div>
+                            <label for="Description" style="font-weight: bold;">Edit the Discription:</label>
+                            <input type="text" id="editDescription" name="description" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px;" />
+                            <span id="editDescription-error" style="color:red"></span>
                         </div>
                         <br>
-                </div>
 
-                <div class="modal-footer pop">
-                    
-                    <button type="submit" class="btn btn-primary ">Save changes</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="saveEdit">Save Changes</button>
                 </div>
                 </form>
             </div>
         </div>
-    </div> -->
+    </div>
 
 
     <script>
@@ -156,14 +159,14 @@
                     {
                         data: null,
                         render: function (data, type, full, meta) {
-                            return `
-                        
-                        <button class="btn btn-danger btn-delete" data-id="${data.id}">Delete</button>`;
+                            return `<button class="btn btn-danger btn-delete" data-id="${data.id}">Delete</button> &nbsp <button class="btn btn-success btn-edit" data-id="${data.id}">Edit</button>`;
                         
                         }
                     }
                 ]
             });
+
+            
 
 
             $('#openTaskForm').click(function () {
@@ -323,6 +326,57 @@
 
             });
 
+
+
+           
+
+
+            $(document).on('click', '.btn-edit', function() {
+                var id = $(this).attr('data-id');
+                $('#taskid').val(id);
+                $("#editModal").modal('show');
+                $.ajax({
+                    url: "<?php echo base_url() ?>todo_controller/showInfo",
+                    data: {
+                        id: id
+                    },
+                    method: "POST",
+                    dataType: "JSON",
+                    success: function(data) {
+                        $('#editTask').val(data.title);
+                        $('#editDescription').val(data.description);
+                    }
+                });
+            });
+
+            $('.close').click(function() {
+                $('#editModal').modal('hide');
+            });
+
+            $("#editForm").submit(function(event) {
+                event.preventDefault();
+
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: "<?php echo base_url(); ?>todo_controller/editTask",
+                    data: formData,
+                    method: 'POST',
+                    success: function(data) {
+                        if (data == 1) {
+                            $('#editModal').modal('hide'); // Close the modal on successful submission
+                            setTimeout(function() {
+                                window.location.reload(); // Reload the DataTable after successful submission
+                            }, 1000);
+                            toastr.info('Info: Task Updation Successful', 'Task Updated');
+                        } else {
+                            toastr.warning('Info: New and Previous value can not be same', 'Task Not Updated');
+                        }
+                    },
+                    error: function() {
+                        toastr.error('An error occurred while updating the task', 'Failed');
+                    }
+                });
+            });
 
 
 

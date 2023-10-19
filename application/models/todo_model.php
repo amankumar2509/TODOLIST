@@ -41,6 +41,20 @@
             return $this->db->affected_rows() > 0;
         }
 
-        
+        public function updateInfo($data)
+        {
+            $id = $data['id'];
+            $dataa = array(
+                'title' => $data['title'],
+                'description' => $data['description']
+            );
+            $this->db->where('id', $id);
+            $status = $this->db->update('todo', $dataa);
+            if ($status) {
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 ?>

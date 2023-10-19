@@ -26,7 +26,7 @@ class Todo_controller extends CI_Controller
         $config = ['
              base_url' => base_url('Todo_controller/ajax_getData/'),
             'total_rows' => $this->Todo_model->countAllData(),
-            'per_page' => 10,
+            'per_page' => 20,
             'uri_segment' => 3
         ];
         $this->pagination->initialize($config);
@@ -45,6 +45,9 @@ class Todo_controller extends CI_Controller
     {
         $this->load->view('todo');
     }
+
+
+    //to add task by add button
     public function addTask()
     {
         $this->form_validation->set_rules('task', 'Task', 'required');
@@ -69,6 +72,8 @@ class Todo_controller extends CI_Controller
         }
 
     }
+
+    //delete the task 
     public function deleteTask()
     {
         $id = $this->input->post('id');
@@ -77,6 +82,8 @@ class Todo_controller extends CI_Controller
         echo json_encode($response);
     }
 
+
+    //to update status
     public function updateTaskStatus()
     {
         $id = $this->input->post('id');
@@ -110,6 +117,28 @@ class Todo_controller extends CI_Controller
         } else {
             echo json_encode(['success' => false]);
         }
+    }
+
+    //controllers for edit 
+    public function showInfo()
+    {
+        $id = $_POST['id'];
+        $data = $this->db->get_where('todo', ['id' => $id])->row_array();
+        echo json_encode($data);
+    }
+
+    public function editTask()
+    {
+       
+        $data = $this->input->post();
+        $this->Todo_model->updateInfo($data);
+        $data = $this->db->affected_rows();
+        if ($data > 0) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
     }
 
 
