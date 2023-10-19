@@ -29,8 +29,6 @@
             return $this->db->affected_rows() > 0;
         }
 
-        public function statusInfo($taskId,$newStatus){
-          
-        }
+        
     }
 ?>

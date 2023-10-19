@@ -71,7 +71,7 @@ public function updateStatus()
 {
         $task_id = $this->input->post('id');
         $current_status = $this->db->get_where('todo', ['id' => $task_id])->row()->status;
-        $new_status = ($current_status == 1) ? 0 : 1;
+        $new_status = $current_status == 1 ? 0 : 1;
 
         $res=$this->db->where('id', $task_id)->update('todo', ['status' => $new_status]);
         if($res){
