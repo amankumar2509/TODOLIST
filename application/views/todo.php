@@ -51,7 +51,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Question</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" >Add New Question</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                     </button>
                 </div>
@@ -61,12 +61,14 @@
                             <label for="Task">Task: </label>
                             <br>
                             <input type="text" id="task" name="task"></input>
+                            <div id="taskError" class="error-message" style="color:#FF0000"></div>
                         </div>
                         <br>
                         <div class="container">
                             <label for="discription">Discription: </label>
                             <br>
                             <input type="text" id="Discription" name="discription"></input>
+                            <div id="descriptionError" class="error-message" style="color:#FF0000"></div>
                         </div>
                         <br>
 
@@ -120,10 +122,11 @@
         $(document).ready(function () {
             var dataTable = $('#tasksTable').DataTable({
                 "paging": true,
-                "lengthMenu": [[ 5, 25, -1], [5, 25, "All"]],
+                "lengthMenu": [2,5, 10, 25, "All"],
                 columnDefs: [
                     { orderable: false, targets: [-1, -2] }
                 ],
+                //"serverSide":true,
 
                 "ajax": {
                     "url": "<?= base_url('Todo_controller/ajax_getData') ?>",
@@ -156,6 +159,7 @@
                             return `
                         
                         <button class="btn btn-danger btn-delete" data-id="${data.id}">Delete</button>`;
+                        
                         }
                     }
                 ]
@@ -168,6 +172,26 @@
             $("#save").submit(function (event) {
                 event.preventDefault();
                 var formData = $(this).serialize();
+                const taskValue = $("#task").val().trim();
+                const descriptionValue = $("#Discription").val().trim();
+
+                $(".error-message").hide();
+
+                // Validate the Task field (not empty)
+                if (taskValue === "") {
+                    $("#taskError").text("Task field is required.").show();
+                    //alert("Task field is required.");
+                    return;
+                }
+
+                // Validate the Description field (not empty)
+                if (descriptionValue === "") {
+                     $("#descriptionError").text("Description field is required.").show();
+                    //alert("Description field is required.");
+                    return;
+                }
+
+                
                 $.ajax({
                     type: "POST",
                     url: "<?php echo base_url(); ?>Todo_Controller/addTask",

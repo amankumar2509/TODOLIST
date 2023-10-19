@@ -3,6 +3,18 @@
         public function __construct(){
             parent::__construct();
             $this->load->database();
+            
+
+        }
+
+        public function countAllData(){
+            return $this->db->count_all('todo');
+        }
+
+        public function getPaginatedData($limit, $offset){
+            $this->db->limit($limit, $offset);
+            $query = $this->db->get('todo');
+            return $query->result();
         }
         public function getData(){
             $query=$this->db->get('todo');
