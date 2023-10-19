@@ -125,7 +125,7 @@
         $(document).ready(function () {
             var dataTable = $('#tasksTable').DataTable({
                 "paging": true,
-                "lengthMenu": [2,5, 10, 25, "All"],
+                "lengthMenu": [[2,5, 10, 25, -1],[2,5, 10, 25, "All"]],
                 columnDefs: [
                     { orderable: false, targets: [-1, -2] }
                 ],
